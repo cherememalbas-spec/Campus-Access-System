@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secure Smart Campus System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+    <button class="menu-button"
+            type="button"
+            onclick="toggleSidebar()"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+            id="menuButton">
+        ☰
+    </button>
+
+    <div class="topbar-title">
+        🎓 Secure Smart Campus
+    </div>
+
+    {% if session.get('username') %}
+    <form class="topbar-logout-form" method="POST" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="logout-button" type="submit">Log Out</button>
+    </form>
+    {% endif %}
+</header>
+
+<!-- DARK BACKGROUND WHEN MENU OPENS -->
+<div class="sidebar-overlay"
+     id="sidebarOverlay"
+     onclick="closeSidebar()"></div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-heading">
+            <h2>🎓 Smart Campus</h2>
+            <p>Navigation & Monitoring</p>
+        </div>
+
+        <div class="nav-title">MAIN MENU</div>
+
+        {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') }}">🏠 Dashboard</a>
+        {% elif session.get('role') == 'student' %}
+            <a href="{{ url_for('student_dashboard') }}">🏠 Dashboard</a>
+        {% endif %}
+
+        {% if session.get('username') %}
+
+        {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('users_page') }}">👥 User Management</a>
+        {% endif %}
+
+        <a href="{{ url_for('access_page') }}">🔐 Access Verification</a>
+        <a href="{{ url_for('relation_page') }}">🔗 User Relations</a>
+        <a href="{{ url_for('matrix_page') }}">📊 Access Matrix</a>
+
+        <div class="nav-title">CAMPUS FEATURES</div>
+
+        <a href="{{ url_for('navigation_page') }}">🗺️ Campus Navigation</a>
+        <a href="{{ url_for('campus_tree_page') }}">🌳 Campus Tree</a>
+        <a href="{{ url_for('monitoring_page') }}">📡 Facility Monitoring</a>
+
+        <div class="nav-title">CS CONCEPTS</div>
+
+        <a href="{{ url_for('security_page') }}">🔒 Cryptography</a>
+        <a href="{{ url_for('simulation_page') }}">🎲 Probability Simulation</a>
+        <a href="{{ url_for('number_theory_page') }}">🔢 Number Theory</a>
+        <a href="{{ url_for('logic_page') }}">🧠 Logic & Proof</a>
+        <a href="{{ url_for('fsm_page') }}">🔄 Finite State Machine</a>
+
+        <div class="sidebar-bottom">
+            <form method="POST" action="{{ url_for('logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="sidebar-logout-button" type="submit">🚪 Log Out</button>
+            </form>
+        </div>
+
+        {% endif %}
+
+    </aside>
+
+    <!-- MAIN PAGE -->
+    <main class="main">
+
+        <div class="page-toolbar">
+            <button class="back-button"
+                    type="button"
+                    onclick="goBack()">
+                ← Back
+            </button>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const button = document.getElementById("menuButton");
+
+        sidebar.classList.toggle("show");
+        overlay.classList.toggle("show");
+
+        button.setAttribute(
+            "aria-expanded",
+            sidebar.classList.contains("show")
+        );
+    }
+
+    function closeSidebar() {
+        document.getElementById("sidebar").classList.remove("show");
+        document.getElementById("sidebarOverlay").classList.remove("show");
+        document.getElementById("menuButton").setAttribute(
+            "aria-expanded", "false"
+        );
+    }
+
+    function goBack() {
+        if (document.referrer &&
+            new URL(document.referrer).origin === window.location.origin &&
+            window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{{ url_for('login') }}";
+        }
+    }
+
+    // Close the mobile menu after selecting a page.
+    document.querySelectorAll(".sidebar a").forEach(function(link) {
+        link.addEventListener("click", closeSidebar);
+    });
+</script>
+
+</body>
+</html>

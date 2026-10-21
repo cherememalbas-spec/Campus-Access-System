@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+
+    <h1>
+        Number Theory
+    </h1>
+
+    <p>
+        Number theory used for ID verification.
+    </p>
+
+</div>
+
+
+<div class="panel form-box">
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="number">Numeric part of a user ID</label>
+        <input type="number" id="number" name="number" min="1" max="999999"
+               value="{{ number }}" required>
+        <button type="submit">CHECK NUMBER</button>
+    </form>
+</div>
+
+{% if error %}
+<div class="result denied">{{ error }}</div>
+{% endif %}
+
+<div class="grid-2">
+    <div class="panel">
+        <h2>Modular Arithmetic</h2>
+        <p>The remainder when {{ number }} is divided by 7 is:</p>
+        <div class="logic-box">{{ number }} % 7 = {{ remainder }}</div>
+    </div>
+
+    <div class="panel">
+        <h2>Greatest Common Divisor</h2>
+        <p>The greatest common divisor of {{ number }} and 7 is:</p>
+        <div class="logic-box">GCD({{ number }}, 7) = {{ gcd }}</div>
+        <p>
+            {% if is_coprime %}
+                These numbers are coprime.
+            {% else %}
+                These numbers are not coprime.
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="panel section-panel">
+    <h2>About This Example</h2>
+    <p>
+        This number theory exercise demonstrates modular arithmetic
+        and the greatest common divisor. It does not decide campus
+        access and is not a security mechanism.
+    </p>
+</div>
+
+{% endblock %}

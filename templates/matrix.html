@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+
+    <h1>
+        Access Permission Matrix
+    </h1>
+
+    <p>
+        1 = Access Allowed | 0 = Access Denied
+    </p>
+
+</div>
+
+
+<div class="panel table-wrap">
+
+<table>
+
+    <tr>
+
+        <th>
+            User
+        </th>
+
+        {% for facility in facility_names %}
+
+        <th>
+            {{ facility }}
+        </th>
+
+        {% endfor %}
+
+    </tr>
+
+
+    {% for i in range(user_ids|length) %}
+
+    <tr>
+
+        <td>
+
+            <b>
+                {{ user_ids[i] }}
+            </b>
+
+        </td>
+
+
+        {% for value in matrix[i] %}
+
+        <td>
+
+            <b>
+                {{ value }}
+            </b>
+
+        </td>
+
+        {% endfor %}
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

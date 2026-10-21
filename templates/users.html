@@ -1,0 +1,94 @@
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>User Management</h1>
+    <p>View, search, and sort campus user records.</p>
+</div>
+
+<!-- SEARCH AND SORT -->
+<div class="panel search-sort-panel">
+
+    <form method="GET" action="{{ url_for('users_page') }}" class="search-sort-form">
+        <div class="form-field">
+            <label for="user-search">Search by ID or Name</label>
+            <input
+                type="text"
+                id="user-search"
+                name="q"
+                value="{{ keyword }}"
+                placeholder="Example: S001 or Maria"
+            >
+        </div>
+
+        <div class="form-field">
+            <label for="user-sort">Sort By</label>
+            <select id="user-sort" name="sort">
+                <option value="id" {% if sort_by == "id" %}selected{% endif %}>
+                    User ID
+                </option>
+                <option value="name" {% if sort_by == "name" %}selected{% endif %}>
+                    Name
+                </option>
+            </select>
+        </div>
+
+        <div class="search-sort-actions">
+            <button type="submit">SEARCH</button>
+            <a href="{{ url_for('users_page') }}" class="back-link">Clear Search</a>
+        </div>
+    </form>
+
+</div>
+
+<!-- USER TABLE -->
+<div class="panel table-wrap section-panel">
+
+    <h2>User List</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Account Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for user in results %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.category }}</td>
+
+                <td>
+                    {% if user.active %}
+                        <span class="badge active-badge">
+                            Active
+                        </span>
+                    {% else %}
+                        <span class="badge inactive-badge">
+                            Inactive
+                        </span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% else %}
+            <tr>
+                <td colspan="4">No matching users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Total matching users: {{ results|length }}</p>
+
+</div>
+
+{% endblock %}
+```

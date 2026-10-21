@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Caesar Cipher</h1>
+    <p>Practice a simple letter-shift cipher with sample messages.</p>
+</div>
+
+<div class="panel form-box">
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label for="message">Message or encrypted message</label>
+        <textarea id="message" name="message" rows="5"
+                  placeholder="Enter your message here..."
+                  required>{{ message }}</textarea>
+
+        <label for="shift">Shift amount</label>
+        <input id="shift" name="shift" type="number" min="1" max="25"
+               value="{{ shift }}" required>
+
+        <label for="action">Choose an action</label>
+        <select id="action" name="action" required>
+            <option value="encrypt">Encrypt Message</option>
+            <option value="decrypt">Decrypt Message</option>
+        </select>
+
+        <button type="submit">PROCESS MESSAGE</button>
+    </form>
+</div>
+
+{% if encrypted_message %}
+<div class="panel section-panel">
+    <h2>Encrypted Message</h2>
+    <p class="encrypted-message">
+        {{ encrypted_message }}
+    </p>
+</div>
+{% endif %}
+
+{% if decrypted_message %}
+<div class="panel section-panel">
+    <h2>Decrypted Message</h2>
+    <p>{{ decrypted_message }}</p>
+</div>
+{% endif %}
+
+{% if error %}
+<div class="result denied">
+    {{ error }}
+</div>
+{% endif %}
+
+<div class="panel section-panel">
+    <h3>How the Caesar Cipher Works</h3>
+    <ul class="info-list">
+        <li>Each English letter moves forward by the selected number of places.</li>
+        <li>Decryption moves letters backward by the same amount.</li>
+        <li>Capitalization, spaces, punctuation, and other characters are preserved.</li>
+        <li>This classic cipher is easy to break and is only for learning, not security.</li>
+    </ul>
+</div>
+
+{% endblock %}

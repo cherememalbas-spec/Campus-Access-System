@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Finite State Machine</h1>
+    <p>Demonstrate valid campus system state transitions.</p>
+</div>
+
+<div class="panel form-box">
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label>Current State</label>
+        <select name="current_state" id="current_state" required>
+            {% for state in states %}
+            <option value="{{ state }}"
+                {% if current_state == state %}selected{% endif %}>
+                {{ state }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Event</label>
+        <select name="event" id="event" required>
+            {% for event_name in states[current_state] %}
+                <option value="{{ event_name }}"
+                    {% if event == event_name %}selected{% endif %}>
+                    {{ event_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">PROCESS TRANSITION</button>
+    </form>
+
+</div>
+
+<div class="panel section-panel">
+    <h2>Transition Result</h2>
+    <div class="logic-box">
+        {% if next_state %}
+            {{ previous_state }} + {{ event }} → {{ next_state }}
+        {% else %}
+            Current state: {{ current_state }}
+        {% endif %}
+    </div>
+    <p><strong>Current state:</strong> {{ current_state }}</p>
+    <p>{{ message }}</p>
+</div>
+
+<div class="panel section-panel">
+    <h2>Allowed Transitions</h2>
+
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Current State</th>
+                <th>Event</th>
+                <th>Next State</th>
+            </tr>
+
+            {% for state, events in states.items() %}
+                {% for event_name, destination in events.items() %}
+                <tr>
+                    <td>{{ state }}</td>
+                    <td>{{ event_name }}</td>
+                    <td>{{ destination }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<script id="transitions-data" type="application/json">{{ states|tojson }}</script>
+<script>
+    const transitions = JSON.parse(document.getElementById("transitions-data").textContent);
+    const stateSelect = document.getElementById("current_state");
+    const eventSelect = document.getElementById("event");
+
+    stateSelect.addEventListener("change", function() {
+        eventSelect.replaceChildren();
+
+        Object.keys(transitions[stateSelect.value]).forEach(function(eventName) {
+            const option = document.createElement("option");
+            option.value = eventName;
+            option.textContent = eventName;
+            eventSelect.appendChild(option);
+        });
+    });
+</script>
+
+{% endblock %}

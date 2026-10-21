@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Logic and Proof</h1>
+    <p>Express the campus access decision as a logical statement.</p>
+</div>
+
+<div class="panel">
+    <h2>Access Rule</h2>
+    <div class="logic-box">
+        Access = Authorized AND Active AND Has Permission
+    </div>
+    <p>
+        The system grants access only when all three conditions
+        are true. If any condition is false, access is denied.
+    </p>
+</div>
+
+<div class="panel">
+    <h2>Why This Rule Works</h2>
+    <ol class="info-list">
+        <li>Check that the user exists in the campus records.</li>
+        <li>Check that the user's account is active.</li>
+        <li>Check that the user is authorized.</li>
+        <li>Check that the user has permission for the facility.</li>
+        <li>Grant access only if every check passes.</li>
+    </ol>
+    <p>
+        This is a simple demonstration of a conjunction (AND).
+        The actual access decision is made by the backend.
+    </p>
+</div>
+
+{% endblock %}

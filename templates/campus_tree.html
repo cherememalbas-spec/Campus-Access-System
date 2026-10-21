@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Campus Tree</h1>
+    <p>Organize departments, buildings, and rooms hierarchically.</p>
+</div>
+
+<div class="panel">
+    <h2>Campus Hierarchy</h2>
+
+    {% for item in tree_rows %}
+    <div class="campus-tree-row level-{{ item.level }}">
+        {% if item.level == 0 %}
+            🏫
+        {% elif item.level == 1 %}
+            🏢
+        {% elif item.level == 2 %}
+            📂
+        {% else %}
+            🚪
+        {% endif %}
+
+        {{ item.name }}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="panel section-panel">
+    <h2>Recursion Explanation</h2>
+    <p>
+        The function visits each item in the tree. If an item
+        has children, it calls itself to visit those children.
+        It continues until it reaches items without children.
+    </p>
+</div>
+
+{% endblock %}

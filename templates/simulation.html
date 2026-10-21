@@ -1,0 +1,57 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Probability Simulation</h1>
+    <p>Simulate room availability using random outcomes.</p>
+</div>
+
+<div class="panel form-box">
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Number of Trials</label>
+        <input type="number" name="trials"
+               min="1" max="10000" value="100" required>
+
+        <button type="submit">RUN SIMULATION</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="panel section-panel">
+
+    {% if result.error %}
+        <div class="result denied">{{ result.error }}</div>
+    {% else %}
+        <h2>Simulation Results</h2>
+
+        <p><b>Total trials:</b> {{ result.trials }}</p>
+        <p><b>Available outcomes:</b> {{ result.available }}</p>
+        <p><b>Unavailable outcomes:</b> {{ result.unavailable }}</p>
+
+        <div class="logic-box">
+            P(Available) = {{ result.available }} / {{ result.trials }}
+            = {{ "%.4f"|format(result.probability) }}
+        </div>
+
+        <h3>Random Variable</h3>
+        <p>
+            Let X = 1 if a room is available, and X = 0
+            if a room is unavailable.
+        </p>
+
+        <p><b>Possible values of X:</b> 0 and 1.</p>
+
+        <p>
+            The simulation estimates the probability from
+            randomly generated outcomes. It does not measure
+            actual campus room availability.
+        </p>
+    {% endif %}
+
+</div>
+{% endif %}
+
+{% endblock %}

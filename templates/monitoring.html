@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Facility Monitoring</h1>
+    <p>View campus facility statuses and update them when authorized.</p>
+</div>
+
+{% if message %}
+<div class="panel">
+    <p>{{ message }}</p>
+</div>
+{% endif %}
+
+<div class="cards">
+
+    {% for facility in facilities %}
+    <div class="card">
+
+        <div class="card-label">{{ facility }}</div>
+
+        <div class="card-number">
+            {{ facility_status[facility].status }}
+        </div>
+
+        <p>{{ facility_status[facility].note }}</p>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<div class="panel">
+    <h2>Facility Status Management</h2>
+
+    {% if admin %}
+
+        <p>Update a facility's current status.</p>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="facility">Campus Facility</label>
+            <select name="facility" id="facility" required>
+                {% for facility in facilities %}
+                <option value="{{ facility }}">
+                    {{ facility }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <label for="status">New Status</label>
+            <select name="status" id="status" required>
+                <option value="Available">Available</option>
+                <option value="Full">Full</option>
+                <option value="Closed">Closed</option>
+                <option value="Under Maintenance">
+                    Under Maintenance
+                </option>
+            </select>
+
+            <label for="note">Status Details</label>
+            <textarea
+                name="note"
+                id="note"
+                rows="3"
+                placeholder="Enter a short explanation..."
+            ></textarea>
+
+            <button type="submit">UPDATE STATUS</button>
+
+        </form>
+
+    {% else %}
+
+        <p>
+            You can view campus facility statuses, but only an
+            administrator can update them.
+        </p>
+
+    {% endif %}
+</div>
+
+<div class="panel">
+    <h2>Monitoring Information</h2>
+
+    <p><strong>Available:</strong> The facility is ready for use.</p>
+    <p><strong>Full:</strong> The facility has reached its capacity.</p>
+    <p><strong>Closed:</strong> The facility is not open for use.</p>
+    <p><strong>Under Maintenance:</strong> The facility is temporarily unavailable.</p>
+
+    <p>
+        Facility statuses are manually managed in this demonstration.
+        They are not live sensor readings.
+    </p>
+</div>
+
+{% endblock %}

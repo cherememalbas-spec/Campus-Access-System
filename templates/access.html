@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Access Verification</h1>
+    <p>Check whether a user can enter a campus facility.</p>
+</div>
+
+<div class="panel form-box">
+    <h2>Verify User Access</h2>
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="user_id">User ID</label>
+        <select id="user_id" name="user_id" required>
+            {% for id, user in users.items() %}
+                <option value="{{ id }}">
+                    {{ id }} - {{ user.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="facility">Campus Facility</label>
+        <select id="facility" name="facility" required>
+            {% for facility in facilities %}
+                <option value="{{ facility }}">
+                    {{ facility }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">CHECK ACCESS</button>
+    </form>
+</div>
+
+{% if result %}
+
+<div class="panel">
+
+    <div class="result-title">
+        {% if result.granted %}
+            🟢 ACCESS GRANTED
+        {% else %}
+            🔴 ACCESS DENIED
+        {% endif %}
+    </div>
+
+    <p>
+        <strong>User ID:</strong>
+        {{ result.user_id }}
+    </p>
+
+    <p>
+        <strong>Facility:</strong>
+        {{ result.facility }}
+    </p>
+
+    <p>
+        <strong>Result:</strong>
+        {{ result.reason }}
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

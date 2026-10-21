@@ -1,0 +1,5 @@
+/secret.key
+/instance/fernet.key
+__pycache__/
+*.py[cod]
+.venv/

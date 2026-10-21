@@ -1,0 +1,117 @@
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Dashboard</h1>
+    <p>Secure Smart Campus Navigation and Monitoring System</p>
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <div class="card-label">Total Users</div>
+        <div class="card-number">{{ users|length }}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">Authorized Users</div>
+        <div class="card-number">{{ authorized }}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">Restricted Users</div>
+        <div class="card-number">{{ restricted }}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-label">Campus Facilities</div>
+        <div class="card-number">{{ facilities }}</div>
+    </div>
+
+</div>
+
+<div class="panel">
+    <h2>Quick Access</h2>
+    <p>Choose a feature to continue.</p>
+
+    <div class="quick-links">
+        <a href="{{ url_for('users_page') }}" class="quick-link">
+            <h3>User Management</h3>
+            <p>View, search, and sort user records.</p>
+        </a>
+
+        <a href="{{ url_for('access_page') }}" class="quick-link">
+            <h3>Access Verification</h3>
+            <p>Check whether a user can enter a facility.</p>
+        </a>
+
+        <a href="{{ url_for('relation_page') }}" class="quick-link">
+            <h3>User-Facility Relations</h3>
+            <p>View which facilities each user can access.</p>
+        </a>
+
+        <a href="{{ url_for('matrix_page') }}" class="quick-link">
+            <h3>Access Matrix</h3>
+            <p>View facility permissions using 1 and 0.</p>
+        </a>
+
+        <a href="{{ url_for('navigation_page') }}" class="quick-link">
+            <h3>Campus Navigation</h3>
+            <p>Find a route between campus locations.</p>
+        </a>
+
+        <a href="{{ url_for('monitoring_page') }}" class="quick-link">
+            <h3>Facility Monitoring</h3>
+            <p>View facility statuses managed by the admin.</p>
+        </a>
+
+        <a href="{{ url_for('campus_tree_page') }}" class="quick-link">
+            <h3>Campus Tree</h3>
+            <p>Explore the campus hierarchy.</p>
+        </a>
+
+        <a href="{{ url_for('simulation_page') }}" class="quick-link">
+            <h3>Probability Simulation</h3>
+            <p>Run independent sample availability trials.</p>
+        </a>
+
+        <a href="{{ url_for('security_page') }}" class="quick-link">
+            <h3>Cryptography</h3>
+            <p>Encrypt or decrypt a sample message with a letter shift.</p>
+        </a>
+
+        <a href="{{ url_for('number_theory_page') }}" class="quick-link">
+            <h3>Number Theory</h3>
+            <p>Explore remainders and greatest common divisors.</p>
+        </a>
+
+        <a href="{{ url_for('logic_page') }}" class="quick-link">
+            <h3>Logic and Proof</h3>
+            <p>Review the system's access decision rule.</p>
+        </a>
+
+        <a href="{{ url_for('fsm_page') }}" class="quick-link">
+            <h3>Finite State Machine</h3>
+            <p>Explore valid system state transitions.</p>
+        </a>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Access Rule</h2>
+
+    <div class="logic-box">
+        ACCESS = Authorized AND Active AND Has Permission
+    </div>
+
+    <p>
+        Access is granted only when the user is authorized,
+        their account is active, and they have permission for
+        the selected facility.
+    </p>
+</div>
+
+{% endblock %}
+```

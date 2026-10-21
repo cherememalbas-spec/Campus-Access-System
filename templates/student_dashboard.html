@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+    <h1>Welcome, {{ student_name }}</h1>
+    <p>Your campus access and facility information.</p>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div class="card-label">Facilities You Can Access</div>
+        <div class="card-number">{{ authorized_facilities|length }}</div>
+    </div>
+    <div class="card">
+        <div class="card-label">Campus Facilities</div>
+        <div class="card-number">{{ facilities|length }}</div>
+    </div>
+    <div class="card">
+        <div class="card-label">Available Facilities</div>
+        <div class="card-number">{{ available_count }}</div>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>My Facility Permissions</h2>
+    {% if authorized_facilities %}
+        <ul class="info-list">
+            {% for facility in authorized_facilities %}
+            <li>{{ facility }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No facilities are currently assigned to your account.</p>
+    {% endif %}
+</div>
+
+<div class="panel">
+    <h2>Quick Access</h2>
+    <div class="quick-links">
+        <a href="{{ url_for('access_page') }}" class="quick-link">
+            <h3>Access Verification</h3>
+            <p>Check your access permission for a facility.</p>
+        </a>
+        <a href="{{ url_for('monitoring_page') }}" class="quick-link">
+            <h3>Facility Monitoring</h3>
+            <p>View current campus facility statuses.</p>
+        </a>
+        <a href="{{ url_for('navigation_page') }}" class="quick-link">
+            <h3>Campus Navigation</h3>
+            <p>Find a low-cost route between locations.</p>
+        </a>
+        <a href="{{ url_for('relation_page') }}" class="quick-link">
+            <h3>User Relations</h3>
+            <p>Explore user and facility permissions.</p>
+        </a>
+        <a href="{{ url_for('matrix_page') }}" class="quick-link">
+            <h3>Access Matrix</h3>
+            <p>View permissions as a matrix.</p>
+        </a>
+        <a href="{{ url_for('campus_tree_page') }}" class="quick-link">
+            <h3>Campus Tree</h3>
+            <p>Explore the campus hierarchy.</p>
+        </a>
+        <a href="{{ url_for('simulation_page') }}" class="quick-link">
+            <h3>Probability Simulation</h3>
+            <p>Run independent facility availability trials.</p>
+        </a>
+        <a href="{{ url_for('security_page') }}" class="quick-link">
+            <h3>Caesar Cipher</h3>
+            <p>Encrypt or decrypt a sample message with a letter shift.</p>
+        </a>
+        <a href="{{ url_for('number_theory_page') }}" class="quick-link">
+            <h3>Number Theory</h3>
+            <p>Explore modular arithmetic and the GCD.</p>
+        </a>
+        <a href="{{ url_for('logic_page') }}" class="quick-link">
+            <h3>Logic and Proof</h3>
+            <p>Review the campus access decision rule.</p>
+        </a>
+        <a href="{{ url_for('fsm_page') }}" class="quick-link">
+            <h3>Finite State Machine</h3>
+            <p>Explore valid system state transitions.</p>
+        </a>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Current Facility Statuses</h2>
+    <div class="cards">
+        {% for facility in facilities %}
+        <div class="card">
+            <div class="card-label">{{ facility }}</div>
+            <div class="card-number">{{ facility_status[facility].status }}</div>
+            <p>{{ facility_status[facility].note }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

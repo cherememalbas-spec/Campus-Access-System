@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="header">
+
+    <h1>
+        User-Facility Relation
+    </h1>
+
+    <p>
+        Relation R = {(User, Facility)}
+    </p>
+
+</div>
+
+
+<div class="grid-2">
+
+{% for id, user in users.items() %}
+
+<div class="panel">
+
+    <h2>
+
+        {{ id }}
+
+        —
+
+        {{ user.name }}
+
+    </h2>
+
+
+    {% if access_relation[id] %}
+
+    <ul class="info-list">
+
+        {% for facility in access_relation[id] %}
+
+        <li>
+
+            {{ facility }}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>
+        No facility access.
+    </p>
+
+    {% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
